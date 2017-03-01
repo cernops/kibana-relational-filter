@@ -1,0 +1,15 @@
+<DIV ng-controller="relationalFilterController" ">
+
+<select  name="my_filter" ng-model="my_filter" ng-change="filter_menu()" ng-show= "vis.params.outputFormat == 'select'"  >
+  <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
+</select>
+
+<table class="kbn-table table"   ng-show="vis.params.outputFormat == 'table'" >
+<thead><tr><th>{{filter_display}}</th></tr></thead>
+<tbody>
+	<tr ng-repeat="f in filter_entries"  ng-click="filter(f )"  > <td> {{f.label}}</td> </tr> 
+</tbody>
+</table>
+
+
+</DIV>
