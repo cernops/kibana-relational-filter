@@ -36,6 +36,28 @@ module.controller('relationalFilterController', function($scope, Private) {
       $scope.create_filter(JSON.parse($scope.my_filter));
  
    };
+   $scope.filter_menu_multiple = function () {
+      console.log("INSIDE THE FILTER_MENU MULTIPLE");
+      let my_tag;
+      let my_object;
+      my_tag = {"label":"", "value":""};
+
+      for (var i =0; i< $scope.my_filter.length; i++ ) {
+          my_object=JSON.parse($scope.my_filter[i]);
+          my_tag['label'] += my_object['label']+",";
+          my_tag['value'] += my_object['value']+",";
+      }
+      // Remove the last ,
+      my_tag['label'] = my_tag['label'].slice(0, -1);
+      my_tag['value'] = my_tag['value'].slice(0, -1);
+
+      console.log("AND NOW");
+      console.log(my_tag);
+    
+      $scope.create_filter(my_tag);
+
+
+  }
 
     $scope.filter = function(tag) {
         console.log("Ready to add a filter");

@@ -12,4 +12,11 @@
 </table>
 
 
+<select  name="my_filter" ng-model="my_filter" ng-change="filter_menu_multiple()" multiple ng-show= "vis.params.outputFormat == 'multiple'" ng-model-options="{debounce: 1000}"  >
+  <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
+</select>
+
+
+
+
 </DIV>
