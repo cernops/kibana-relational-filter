@@ -12,17 +12,25 @@ module.controller('relationalFilterController', function($scope, Private) {
          console.log("Creating the filter");
          const newFilters = [];
          let filter;
-         let alias, field;
+         let alias, field, internal_query;
          alias = $scope.vis.aggs.bySchemaName['filterDisplay'][0]['params']['field']['name'].replace(".keyword","") ;
          field = $scope.vis.aggs.bySchemaName['filterValue'][0]['params']['field']['name'] ;
          console.log(field);
          console.log(tag);
+         console.log($scope.vis.params.emptyValue);
 
          filter = {};
          filter[alias]= tag.label;
-         filter["query"] = { "terms": { } };
-         filter["query"]["terms"][field] = tag.value.split(",") ;
 
+         internal_query = { "terms": { } };
+         internal_query["terms"][field] = tag.value.split(",") ;
+
+         if ($scope.vis.params.emptyValue){
+            console.log("Doing the boolean query");
+            internal_query = {"bool":{"should":[internal_query, {"bool":{"must_not":[{"exists":{"field":field}}]}}]}};
+         }
+
+         filter["query"]= internal_query;
 
          newFilters.push(filter);
 
