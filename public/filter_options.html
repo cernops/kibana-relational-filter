@@ -1,10 +1,17 @@
 <div class="form-group">
+  <table>
+  <tr><td>
   <label>
     Format:
     <select ng-model="vis.params.outputFormat"  class="ng-pristine ng-valid ng-touched">
       <option selected>select</option>
       <option>table</option>
+      <option>multiple</option>
     </select>
   </label>
+  </td></tr>
+  <tr><td>Include documents without the 'Value' field <input type="checkbox"  ng-model="vis.params.emptyValue" />
+  </td></tr>
+  </table>
 </div>
 

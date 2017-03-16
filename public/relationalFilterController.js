@@ -12,17 +12,25 @@ module.controller('relationalFilterController', function($scope, Private) {
          console.log("Creating the filter");
          const newFilters = [];
          let filter;
-         let alias, field;
+         let alias, field, internal_query;
          alias = $scope.vis.aggs.bySchemaName['filterDisplay'][0]['params']['field']['name'].replace(".keyword","") ;
          field = $scope.vis.aggs.bySchemaName['filterValue'][0]['params']['field']['name'] ;
          console.log(field);
          console.log(tag);
+         console.log($scope.vis.params.emptyValue);
 
          filter = {};
          filter[alias]= tag.label;
-         filter["query"] = { "terms": { } };
-         filter["query"]["terms"][field] = tag.value.split(",") ;
 
+         internal_query = { "terms": { } };
+         internal_query["terms"][field] = tag.value.split(",") ;
+
+         if ($scope.vis.params.emptyValue){
+            console.log("Doing the boolean query");
+            internal_query = {"bool":{"should":[internal_query, {"bool":{"must_not":[{"exists":{"field":field}}]}}]}};
+         }
+
+         filter["query"]= internal_query;
 
          newFilters.push(filter);
 
@@ -36,6 +44,28 @@ module.controller('relationalFilterController', function($scope, Private) {
       $scope.create_filter(JSON.parse($scope.my_filter));
  
    };
+   $scope.filter_menu_multiple = function () {
+      console.log("INSIDE THE FILTER_MENU MULTIPLE");
+      let my_tag;
+      let my_object;
+      my_tag = {"label":"", "value":""};
+
+      for (var i =0; i< $scope.my_filter.length; i++ ) {
+          my_object=JSON.parse($scope.my_filter[i]);
+          my_tag['label'] += my_object['label']+",";
+          my_tag['value'] += my_object['value']+",";
+      }
+      // Remove the last ,
+      my_tag['label'] = my_tag['label'].slice(0, -1);
+      my_tag['value'] = my_tag['value'].slice(0, -1);
+
+      console.log("AND NOW");
+      console.log(my_tag);
+    
+      $scope.create_filter(my_tag);
+
+
+  }
 
     $scope.filter = function(tag) {
         console.log("Ready to add a filter");
