@@ -1,4 +1,4 @@
-<DIV ng-controller="relationalFilterController" ">
+<DIV ng-controller="relationalFilterController">
 
 <select  name="my_filter" ng-model="my_filter" ng-change="filter_menu()" ng-show= "vis.params.outputFormat == 'select'"  >
   <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
