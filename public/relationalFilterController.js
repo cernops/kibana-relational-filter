@@ -62,6 +62,16 @@ module.controller('relationalFilterController', function($scope, Private) {
       console.log("AND NOW");
       console.log(my_tag);
     
+      /*
+      $(document).on('keyup', function(event) {
+        console.log(event);
+        if(event.keyCode== 16 && event.shiftKey) {
+            alert('foo');
+        }
+      });
+      */
+	   
+	   
       $scope.create_filter(my_tag);
 
 
