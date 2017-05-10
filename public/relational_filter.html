@@ -1,22 +1,20 @@
-<DIV ng-controller="relationalFilterController" ">
-
-<select  name="my_filter" ng-model="my_filter" ng-change="filter_menu()" ng-show= "vis.params.outputFormat == 'select'"  >
-  <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
-</select>
-
-<table class="kbn-table table"   ng-show="vis.params.outputFormat == 'table'" >
-<thead><tr><th>{{filter_display}}</th></tr></thead>
-<tbody>
-	<tr ng-repeat="f in filter_entries"  ng-click="filter(f )"  > <td> {{f.label}}</td> </tr> 
-</tbody>
-</table>
-
-
-<select  name="my_filter" size=8 ng-model="my_filter" ng-change="filter_menu_multiple()" multiple ng-show= "vis.params.outputFormat == 'multiple'" ng-model-options="{debounce: 1000}"  >
-  <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
-</select>
-
-
-
-
-</DIV>
+<div ng-controller="relationalFilterController" style='height: 100%; overflow:hidden; width: 100%'>
+   <select  name="my_filter" ng-model="my_filter" ng-change="filter_menu()" ng-show= "vis.params.outputFormat == 'select'" style='width: 100%'>
+      <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
+   </select>
+   <table class="kbn-table table"   ng-show="vis.params.outputFormat == 'table'" width=100%>
+      <thead>
+         <tr>
+            <th>{{filter_display}}</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr ng-repeat="f in filter_entries"  ng-click="filter(f )"  >
+            <td> {{f.label}}</td>
+         </tr>
+      </tbody>
+   </table>
+   <select id="my_select" name="my_filter" size=8 ng-model="my_filter" ng-change="filter_menu_multiple()" ng-keypress="onKeyPress($event)" ng-keydown="onKeyDown($event)" ng-keyup="onKeyUp($event)" ng-blur="onLostFocus($event)" ng-focus="onGetFocus($event)" multiple ng-show= "vis.params.outputFormat == 'multiple'" ng-model-options="{debounce: 1000}" style='height: 100%; overflow:hidden; width: 100%'>
+      <option ng-repeat="f in filter_entries" value="{{f}}" > {{f.label}} </option>
+   </select>
+</div>
