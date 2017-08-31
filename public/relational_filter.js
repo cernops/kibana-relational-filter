@@ -1,14 +1,22 @@
 require('plugins/relational_filter/relationalFilterController');
 
+import { TemplateVisTypeProvider } from 'ui/template_vis_type/template_vis_type';
+import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
+import { VisSchemasProvider } from 'ui/vis/schemas';
+import { uiModules } from 'ui/modules';
+
+
 import optionsTemplate from 'plugins/relational_filter/filter_options.html';
+
+
 
 
 
 // The provider function, which must return our new visualization type
 function RelationalFilterProvider(Private) {
-    var TemplateVisType = Private(require('ui/template_vis_type/template_vis_type'));
+    const TemplateVisType = Private(TemplateVisTypeProvider);
     // Include the Schemas class, which will be used to define schemas
-    var Schemas = Private(require('ui/vis/schemas'));
+    var Schemas = Private(VisSchemasProvider);
 
     // Describe our visualization
     return new TemplateVisType({
@@ -52,4 +60,4 @@ function RelationalFilterProvider(Private) {
 	});
 }
 
-require('ui/registry/vis_types').register(RelationalFilterProvider);
+VisTypesRegistryProvider.register(RelationalFilterProvider);
