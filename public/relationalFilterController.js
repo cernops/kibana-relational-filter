@@ -52,7 +52,7 @@ module.controller('relationalFilterController', function($scope, Private) {
         console.log(tag);
         console.log($scope.vis.params.emptyValue);
 
-        filter = {};
+        filter = {'meta':{'type':'query'}};
         filter[alias] = tag.label;
 
         internal_query = {
