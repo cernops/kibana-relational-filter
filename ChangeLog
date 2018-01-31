@@ -1,3 +1,5 @@
+* Wed Jan 31 2018 Ulrich Schwickerath <schwicke> -0.3
+ - add support for 6.1.1
 * Mon Aug 28 2017 Ulrich Schwickerath <schwicke> -0.2
  - Tagging for ES 5.5.2
 * Tue May 23 2017 Pablo Saiz <pablo.saiz> -0.1

@@ -1,7 +1,8 @@
-// Create an Angular module for this plugin
 import { uiModules } from 'ui/modules';
+
+// Create an Angular module for this plugin
 var module = require('ui/modules').get('relational_filter');
-import { FilterBarQueryFilterProvider } from 'ui/filter_bar/query_filter';
+import { FilterBarQueryFilterProvider }  from 'ui/filter_bar/query_filter';
 
 module.controller('relationalFilterController', function($scope, Private) {
 
@@ -45,12 +46,13 @@ module.controller('relationalFilterController', function($scope, Private) {
         console.log("Creating the filter");
         const newFilters = [];
         let filter;
-        let alias, field, internal_query;
+        let alias, field, internal_query, a, b;
         alias = $scope.vis.aggs.bySchemaName['filterDisplay'][0]['params']['field']['name'].replace(".keyword", "");
         field = $scope.vis.aggs.bySchemaName['filterValue'][0]['params']['field']['name'];
         console.log(field);
         console.log(tag);
         console.log($scope.vis.params.emptyValue);
+        console.log("AM I HERE???");
 
         filter = {'meta':{'type':'query'}};
         filter[alias] = tag.label;
@@ -81,7 +83,10 @@ module.controller('relationalFilterController', function($scope, Private) {
 
         newFilters.push(filter);
 
-        return queryFilter.addFilters(newFilters);
+        a = queryFilter.addFilters(newFilters);
+        b = queryFilter.listFilters();
+        console.log("ADDED THE FILTER");
+        return a;
 
     };
 
@@ -130,6 +135,7 @@ module.controller('relationalFilterController', function($scope, Private) {
         console.log("Ready to add a filter");
         console.log(tag);
         $scope.create_filter(tag);
+        console.log("FILTER ADDED!!!");
     };
 
 
@@ -162,5 +168,5 @@ module.controller('relationalFilterController', function($scope, Private) {
         //        console.log($scope.filter_entries);
 
     });
-
+    $scope.renderComplete();
 });
