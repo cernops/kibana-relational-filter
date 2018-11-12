@@ -49,7 +49,7 @@ const RelationalFilterProvider = (Private) => {
 		    aggFilter: [ 'terms'],
 		    type: 'string',
 		},
-	    ]),   
+	    ]),
 	}
     });
 }
