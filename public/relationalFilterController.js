@@ -84,7 +84,6 @@ module.controller('relationalFilterController', function($scope, Private) {
         newFilters.push(filter);
 
         a = queryFilter.addFilters(newFilters);
-        b = queryFilter.listFilters();
         console.log("ADDED THE FILTER");
         return a;
 
