@@ -49,10 +49,6 @@ module.controller('relationalFilterController', function($scope, Private) {
         let alias, field, internal_query, a, b;
         alias = $scope.vis.aggs.bySchemaName['filterDisplay'][0]['params']['field']['name'].replace(".keyword", "");
         field = $scope.vis.aggs.bySchemaName['filterValue'][0]['params']['field']['name'];
-        console.log(field);
-        console.log(tag);
-        console.log($scope.vis.params.emptyValue);
-        console.log("AM I HERE???");
 
         filter = {'meta':{'type':'query'}};
         filter[alias] = tag.label;
@@ -60,7 +56,7 @@ module.controller('relationalFilterController', function($scope, Private) {
         internal_query = {
             "terms": {}
         };
-        internal_query["terms"][field] = tag.value.split(",");
+        internal_query["terms"][field] = tag['values'];
 
         if ($scope.vis.params.emptyValue) {
             console.log("Doing the boolean query");
@@ -91,7 +87,6 @@ module.controller('relationalFilterController', function($scope, Private) {
 
     $scope.filter_menu = function() {
         console.log("INSIDE THE FILTER_MENU");
-        console.log($scope.my_filter);
         $scope.create_filter(JSON.parse($scope.my_filter));
 
     };
@@ -102,7 +97,7 @@ module.controller('relationalFilterController', function($scope, Private) {
         let my_object;
         my_tag = {
             "label": "",
-            "value": ""
+            "values": [],
         };
 
         if (typeof $scope.my_filter === 'undefined' || !$scope.my_filter) {
@@ -113,12 +108,11 @@ module.controller('relationalFilterController', function($scope, Private) {
         for (var i = 0; i < $scope.my_filter.length; i++) {
             my_object = JSON.parse($scope.my_filter[i]);
             my_tag['label'] += my_object['label'] + ",";
-            my_tag['value'] += my_object['value'] + ",";
+            my_tag['values'] = my_tag['values'].concat(my_object['values']);
         }
 
         // Remove the last ,
         my_tag['label'] = my_tag['label'].slice(0, -1);
-        my_tag['value'] = my_tag['value'].slice(0, -1);
 
         console.log("AND NOW");
         console.log("my tag: " + my_tag);
@@ -148,21 +142,31 @@ module.controller('relationalFilterController', function($scope, Private) {
         if (!$scope.vis.aggs.bySchemaName['filterDisplay'] || !$scope.vis.aggs.bySchemaName['filterValue']) {
             return;
         }
-
+        console.log('Creating the filter');
         var displayId = $scope.vis.aggs.bySchemaName['filterDisplay'][0].id;
         var valuesId = $scope.vis.aggs.bySchemaName['filterValue'][0].id;
-        var buckets = resp.aggregations[displayId].buckets;
+        var buckets = resp.rows;
         $scope.filter_display = $scope.vis.aggs.bySchemaName['filterDisplay'][0]['params']['field']['name'].replace(".keyword", "");
-        $scope.filter_entries = buckets.map(function(bucket) {
-            var subbucket = bucket[valuesId].buckets;
-            var all_values = subbucket.map(function(subbucket) {
-                return subbucket.key;
-            });
-            return {
-                label: bucket.key,
-                value: all_values.join()
-            }
-        });
+        var current_display = '';
+        $scope.filter_entries = [];
+        var current_values = [];
+        buckets.forEach(function (item, index) {
+                            var display= item['col-0-1'];
+                            var value = item['col-1-2'];
+                            if (current_display == display) {
+                               current_values.push(value);
+                            } else {
+                               if (current_display!= '') {
+                                  $scope.filter_entries.push({'label': current_display, 'values':current_values});
+                               }
+                               current_values = [value];
+                               current_display = display;
+                            }
+                       });
+        if (current_display!= '') {
+           $scope.filter_entries.push({'label': current_display, 'values':current_values});
+        }
+
         console.log('Filter_entries created');
         //        console.log($scope.filter_entries);
 
