@@ -1,36 +1,46 @@
 require('plugins/relational_filter/relationalFilterController');
 
-//import { VisController } from './vis_controller';
-import { CATEGORY } from 'ui/vis/vis_category';
+import { Status } from 'ui/vis/update_status';
 import { VisFactoryProvider } from 'ui/vis/vis_factory';
 import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
-import { VisSchemasProvider } from 'ui/vis/editors/default/schemas';
+import { Schemas } from 'ui/vis/editors/default/schemas';
 import optionsTemplate from 'plugins/relational_filter/filter_options.html';
 import visTemplate from 'plugins/relational_filter/relational_filter.html';
 
 // The provider function, which must return our new visualization type
-//function RelationalFilterProvider(Private) {
-const RelationalFilterProvider = (Private) => {
+VisTypesRegistryProvider.register( function (Private)  {
     const VisFactory = Private(VisFactoryProvider);
-    const Schemas = Private(VisSchemasProvider);
     return  VisFactory.createAngularVisualization({
+        type: 'relationalFilter',
 	name: 'trRelationalFilter',
 	title: 'Relational Filter',
-	icon: 'fa-cloud',
+	icon: 'gear',
 	description: 'Kibana Relational Filter',
-	category: CATEGORY.OTHER,
 	visConfig: {
 	    template: visTemplate,
 	    defaults: {
 		outputFormat: 'table',
-		filterTypes: []
+		filterTypes: [],
+                totalFunc: 'sum'
+
 	    }
 	},
-//	requestHandler: 'none',
-	responseHandler: 'none',
+
 	editorConfig: {
 	    optionsTemplate: optionsTemplate,
 	    schemas: new Schemas([
+        {
+          group: 'metrics',
+          name: 'metric',
+          title: 'My metric',
+          aggFilter: ['!geo_centroid', '!geo_bounds'],
+          min: 1,
+          max: 1,
+          defaults: [
+            { type: 'count', schema: 'metric' }
+          ]
+        },
+
 		{
 		    group: 'buckets',
 		    name: 'filterDisplay',
@@ -50,9 +60,6 @@ const RelationalFilterProvider = (Private) => {
 		    type: 'string',
 		},
 	    ]),   
-	}
+	} 
     });
-}
-
-// Define the aggregation your visualization accepts
-VisTypesRegistryProvider.register(RelationalFilterProvider);
+});
