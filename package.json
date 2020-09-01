@@ -1,6 +1,6 @@
 {
   "name": "relational_filter",
-  "version": "6.8.0",
+  "version": "7.1.1",
   "description": "Visualization with the possibility to create filters based on relations between different documents"
 }
 
